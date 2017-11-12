@@ -1,6 +1,7 @@
 # 决策处理模块
 import DataHandler as dh
 from TreeNode import TreeNode
+import numpy as np
 
 def createDecisionTree(dataset:list):
     """
@@ -15,23 +16,29 @@ def createDecisionTree(dataset:list):
     # 返回最后分裂完成的决策树
     return tn
 
-def testDecisonTree(dataset:list):
+def TestDecisonTree(dataset:list,DTree:TreeNode):
     """
     决策树测试函数
     :param dataset:输入测试集
     :return: 返回该模型针对这个测试集的一系列性能测试结果的列表
     """
-    pass
+    result = []
+    for data in dataset:
+        result.append(predict(data,DTree))
 
+    # 准确率
+    npresult = np.array(result)
+    r = list(npresult[:,1])
+    print(npresult)
+    return np.array([r.count(s) for s in set(r)]).max()/len(r)
 
-def predict(data):
+def predict(data,DTree:TreeNode):
     """
     对一条数据做类型判定
-    :param data: 输入一个列表类型数据（包含4个属性）
-    :return: 返回该数据的类型
+    :param data: 输入一个离散化后的列表类型数据（包含4个属性）
+    :return: 返回该数据的类型,(由于本案例中测试数据类标号已知，故同时作为模型检测函数，返回检测结果，True表示正确)
     """
-    pass
-    return 'type a'
+    return DTree.predict(data)
 
 
 if __name__ == '__main__':
@@ -45,5 +52,5 @@ if __name__ == '__main__':
 
     # 用训练集构造决策树
     root = createDecisionTree(s_trainset)
-    # 测试该决策树
-    # TODO,怎么跟踪测试记录的流动，可见叶结点的分裂的属性测试条件应该被记录
+    # 测试该决策树,怎么跟踪测试记录的流动，可见叶结点的分裂的属性测试条件应该被记录
+    print('准确率：',TestDecisonTree(s_testset,root))

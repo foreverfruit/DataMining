@@ -14,14 +14,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="attr_scatter.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_scatter.py">
+      <file leaf-file-name="attr_box.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_box.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="22" selection-end-column="10" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="boxplotdemo2.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/boxplotdemo2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -65,6 +75,7 @@
         <option value="$PROJECT_DIR$/ipython.py" />
         <option value="$PROJECT_DIR$/src/exercise2_multiaxe.py" />
         <option value="$PROJECT_DIR$/iris_preprocess/attr_scatter.py" />
+        <option value="$PROJECT_DIR$/iris_preprocess/attr_box.py" />
       </list>
     </option>
   </component>
@@ -104,6 +115,11 @@
               <item name="project_matplotlib" type="b2602c69:ProjectViewProjectNode" />
               <item name="project_matplotlib" type="462c0819:PsiDirectoryNode" />
               <item name="iris_preprocess" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project_matplotlib" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project_matplotlib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -145,7 +161,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.attr_scatter">
+  <component name="RunManager" selected="Python.boxplotdemo2">
+    <configuration name="attr_box" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/iris_preprocess" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="project_matplotlib" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/iris_preprocess/attr_box.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="attr_scatter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -163,7 +196,7 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="boxplotdemo" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="boxplotdemo2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -175,7 +208,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="project_matplotlib" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/boxplotdemo.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/boxplotdemo2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -193,23 +226,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="project_matplotlib" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/exercise2_multiaxe.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="filldemo" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="project_matplotlib" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/filldemo.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -232,19 +248,19 @@
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.boxplotdemo" />
-      <item index="1" class="java.lang.String" itemvalue="Python.filldemo" />
-      <item index="2" class="java.lang.String" itemvalue="Python.ipython" />
-      <item index="3" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
-      <item index="4" class="java.lang.String" itemvalue="Python.attr_scatter" />
+      <item index="0" class="java.lang.String" itemvalue="Python.ipython" />
+      <item index="1" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
+      <item index="2" class="java.lang.String" itemvalue="Python.attr_scatter" />
+      <item index="3" class="java.lang.String" itemvalue="Python.attr_box" />
+      <item index="4" class="java.lang.String" itemvalue="Python.boxplotdemo2" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.attr_scatter" />
-        <item index="1" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
-        <item index="2" class="java.lang.String" itemvalue="Python.ipython" />
-        <item index="3" class="java.lang.String" itemvalue="Python.filldemo" />
-        <item index="4" class="java.lang.String" itemvalue="Python.boxplotdemo" />
+        <item index="0" class="java.lang.String" itemvalue="Python.boxplotdemo2" />
+        <item index="1" class="java.lang.String" itemvalue="Python.attr_box" />
+        <item index="2" class="java.lang.String" itemvalue="Python.attr_scatter" />
+        <item index="3" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
+        <item index="4" class="java.lang.String" itemvalue="Python.ipython" />
       </list>
     </recent_temporary>
   </component>
@@ -309,7 +325,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ipython.py" />
     <entry file="file://$PROJECT_DIR$/src/multifigure.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -537,20 +552,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/boxplotdemo2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="7" lean-forward="false" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/boxplotdemo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="13" column="10" lean-forward="true" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/plotdemo2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -633,11 +634,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_scatter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="25" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#19#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_box.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="22" selection-end-column="10" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/boxplotdemo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/boxplotdemo2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>

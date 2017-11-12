@@ -14,10 +14,9 @@
 
 根据本课程项目二计划书，第一阶段任务如下（摘自proposal）：
 
-- 数据预处理，将文本数据整理成需要的格式。
-- 完成python语言的学习。
-- 学习一种分类算法的理论，尝试采用python实现，或者至少能应用已有开源库做一些该算法的demo。 
-
+> - 数据预处理，将文本数据整理成需要的格式。
+> - 完成python语言的学习。
+> - 学习一种分类算法的理论，尝试采用python实现，或者至少能应用已有开源库做一些该算法的demo。 
 
 ---
 
@@ -32,9 +31,9 @@
 
 具体的学习笔记见本项目下文件：
 
-- `/项目二/[Task1]学习python/python.md`
-- `/项目二/[Task1]学习python/matplotlib & numpy.md`
-- matplotlib练习代码：`/项目二/[Task1]学习python/project_matplotlib`
+- /项目二/[Task1]学习python/python.md
+- /项目二/[Task1]学习python/matplotlib & numpy.md
+- matplotlib练习代码：/项目二/[Task1]学习python/project_matplotlib
 
 github地址：[Task 2：python学习](https://github.com/foreverfruit/DataMining/tree/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask1%5D%E5%AD%A6%E4%B9%A0python)
 
@@ -55,7 +54,7 @@ github地址：[Task 2：python学习](https://github.com/foreverfruit/DataMinin
 
 ***数据可视化***
 
-这里可视化采用的是原始数据，为了大致观测到数据的一些
+这里可视化采用的是原始数据，为了大致观测到数据的一些特性
 
 1.各属性直方图
 

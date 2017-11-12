@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="attr_box.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_box.py">
+      <file leaf-file-name="attr_3D_scatter.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_3D_scatter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="23" column="10" lean-forward="true" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
+            <state relative-caret-position="198">
+              <caret line="15" column="23" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="10" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -66,6 +66,7 @@
         <option value="$PROJECT_DIR$/src/exercise2_multiaxe.py" />
         <option value="$PROJECT_DIR$/iris_preprocess/attr_scatter.py" />
         <option value="$PROJECT_DIR$/iris_preprocess/attr_box.py" />
+        <option value="$PROJECT_DIR$/iris_preprocess/attr_3D_scatter.py" />
       </list>
     </option>
   </component>
@@ -151,7 +152,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.attr_box">
+  <component name="RunManager" selected="Python.attr_3D_scatter">
+    <configuration name="attr_3D_scatter" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/iris_preprocess" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="project_matplotlib" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/iris_preprocess/attr_3D_scatter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="attr_box" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -220,37 +238,20 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="ipython" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="project_matplotlib" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ipython.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.ipython" />
-      <item index="1" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
-      <item index="2" class="java.lang.String" itemvalue="Python.attr_scatter" />
-      <item index="3" class="java.lang.String" itemvalue="Python.attr_box" />
-      <item index="4" class="java.lang.String" itemvalue="Python.boxplotdemo2" />
+      <item index="0" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
+      <item index="1" class="java.lang.String" itemvalue="Python.attr_scatter" />
+      <item index="2" class="java.lang.String" itemvalue="Python.attr_box" />
+      <item index="3" class="java.lang.String" itemvalue="Python.boxplotdemo2" />
+      <item index="4" class="java.lang.String" itemvalue="Python.attr_3D_scatter" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.attr_box" />
-        <item index="1" class="java.lang.String" itemvalue="Python.boxplotdemo2" />
-        <item index="2" class="java.lang.String" itemvalue="Python.attr_scatter" />
-        <item index="3" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
-        <item index="4" class="java.lang.String" itemvalue="Python.ipython" />
+        <item index="0" class="java.lang.String" itemvalue="Python.attr_3D_scatter" />
+        <item index="1" class="java.lang.String" itemvalue="Python.attr_box" />
+        <item index="2" class="java.lang.String" itemvalue="Python.boxplotdemo2" />
+        <item index="3" class="java.lang.String" itemvalue="Python.attr_scatter" />
+        <item index="4" class="java.lang.String" itemvalue="Python.exercise2_multiaxe" />
       </list>
     </recent_temporary>
   </component>
@@ -315,13 +316,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/multifigure.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ipython.py" />
     <entry file="file://$PROJECT_DIR$/src/multifigure.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -650,8 +644,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_box.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="23" column="10" lean-forward="true" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="23" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/iris_preprocess/attr_3D_scatter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="15" column="23" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="10" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

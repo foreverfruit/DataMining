@@ -60,7 +60,7 @@ github地址：[Task 2：python学习](https://github.com/foreverfruit/DataMinin
 
 这里可视化采用的是原始数据，为了大致观测到数据的一些
 
-1.各属性散点图
+1.各属性直方图
 
 ![pic](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask3%5D%E5%AE%9E%E7%8E%B0%E4%B8%80%E7%A7%8D%E5%88%86%E7%B1%BB%E6%96%B9%E6%B3%95-%E5%86%B3%E7%AD%96%E6%A0%91/pics/attr_hist.png)
 
@@ -94,4 +94,41 @@ for i,data in enumerate(datarray):
 
 plt.show()
 ```
+
+
+
+2.各属性盒装图
+
+这里取whis参数为0.9，用以控制离群点的“离群”程度定义，图中可以看出类别1在4种属性上的分布都比较分散。
+
+![pic2](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask3%5D%E5%AE%9E%E7%8E%B0%E4%B8%80%E7%A7%8D%E5%88%86%E7%B1%BB%E6%96%B9%E6%B3%95-%E5%86%B3%E7%AD%96%E6%A0%91/pics/attr_box.png)
+
+```python
+import  numpy as np
+import  matplotlib.pyplot as plt
+import  os
+
+# load data
+pro_root = os.path.abspath('..')
+sl,sw,pl,pw = np.loadtxt(pro_root+'/dataset/iris.data',
+                  delimiter=',',
+                  unpack=True,dtype=float,usecols=(0,1,2,3))
+datarray = np.array([sl,sw,pl,pw])
+attr_names = ['sepal length','sepal width','petal length','petal width']
+class_names = ['setosa','versicolor','virginica']
+
+# plot
+plt.style.use('ggplot')
+figure = plt.figure()
+for i,data in enumerate(datarray):
+    d1,d2,d3 = data[:50],data[50:100],data[100:]
+    axe = figure.add_subplot(221+i)
+    axe.boxplot((d1,d2,d3), whis=0.9, sym='rx')
+    axe.set_title(attr_names[i])
+    axe.set_xticklabels(class_names)
+
+plt.show()
+```
+
+
 

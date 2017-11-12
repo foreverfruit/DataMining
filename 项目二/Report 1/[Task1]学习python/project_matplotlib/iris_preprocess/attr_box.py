@@ -19,5 +19,6 @@ for i,data in enumerate(datarray):
     axe = figure.add_subplot(221+i)
     axe.boxplot((d1,d2,d3), whis=0.9, sym='rx')
     axe.set_title(attr_names[i])
+    axe.set_xticklabels(class_names)
 
 plt.show()

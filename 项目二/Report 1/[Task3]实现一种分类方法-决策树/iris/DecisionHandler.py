@@ -48,7 +48,7 @@ if __name__ == '__main__':
     s_trainset = dh.discretization(trainingset)
     s_testset = dh.discretization(testset)
     s_dataset = dh.discretization(dataset)
-
+    print(s_dataset)
 
     # 用训练集构造决策树
     root = createDecisionTree(s_trainset)

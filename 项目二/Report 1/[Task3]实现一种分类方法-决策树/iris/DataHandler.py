@@ -2,6 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.style.use('ggplot')
+
 # 这里类标号直接根据数据集写死了，不再设置通用的检测函数，同理属性集也一样
 classlabel = {'Iris-setosa':1,'Iris-versicolor':2,'Iris-virginica':3}
 attrlabel = ('sepal length','sepal width','petal length','petal width')

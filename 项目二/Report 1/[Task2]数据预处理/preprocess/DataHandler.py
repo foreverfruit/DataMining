@@ -128,6 +128,7 @@ def saveTxt(fname,data:np.ndarray):
     """
     np.savetxt(fname, data, fmt='%d', delimiter=',')
 
+
 def load_np_file(fname):
     """
     读取经过numpy整数化之后输出的数据文件
@@ -137,13 +138,13 @@ def load_np_file(fname):
     return np.loadtxt(fname,int,delimiter=',')
 
 
-def statistics(data:np.ndarray):
+def statistics_and_plot(data:np.ndarray):
     """
     对数据集做统计：最大值，最小值，平均值，无偏样本标准差，相关性，对于某些属性选择性做统计
     :param data:
     :return:
     """
-    # 对连续性型数据做统计分析：min、max、mean、var、corf的属性
+    # 对连续性型数据做统计分析：min、max、mean、var、corf的属性，连续属性不做绘图
     attnamelist = ['age', 'fnlwgt', 'education-num', 'capital-gain', 'captal-loss', 'hours-per-week']
     print('连续属性的统计分析：')
     column_class = data[:,14]
@@ -156,30 +157,65 @@ def statistics(data:np.ndarray):
             v_mean = np.mean(column)
             v_std = np.sqrt(( column.var() * column.size) / (column.size - 1))
             v_corf = np.corrcoef(column,column_class)
-            print(attr_name,v_min,v_max,('%.2f' % v_mean),('%.2f' % v_std),('%.3f' % v_corf[0,1]))
+            print(attr_name+':',v_min,v_max,('%.2f' % v_mean),('%.2f' % v_std),('%.3f' % v_corf[0,1]))
 
     # 对离散型属性做分布统计，各取值的占比以及对类分布情况(二分条形图)
-    attnamelist = ['workclass', 'education', 'marital-status', 'occupation','relationship', 'race', 'sex',  'hours-per-week',  'class']
-    print('离散数学的统计分析：')
+    attnamelist = ['workclass', 'education', 'marital-status', 'occupation','relationship', 'race', 'sex',  'native-country',  'class']
+    print('离散属性的统计分析：')
+    figure = plt.figure()
+    k = 0 # 子图位置标记
     for i in range(len(attr_names) - 1):
         attr_name = attr_names[i]
         if attr_name in attnamelist:
             column = data[:, i]
-            unique,index,counts = np.unique(column, return_index=True, return_counts=True, axis=0)
+            # 统计
+            print(attr_name+':',end='')
+            unique,index,counts = np.unique(column, return_index=True, return_counts=True)
             for j in range(unique.size):
                 print('%d %d %.2f\t' % (unique[j],counts[j],counts[j]/column.size),end='')
-            print()
+            print('')
+
+            # 绘图
+            k += 1
+            # 记录对应的unique属性值的类标号为1的数量，初始化都为0
+            count_class1 = np.zeros(unique.size,int)
+            # TODO 这里方法可以改进
+            for j in range(data.shape[0]):
+                count_class1[list(unique).index(data[j,i])] += data[j,14]
+            count_class2 = counts-count_class1
+
+            axe = figure.add_subplot(330+k)
+            axe.bar(unique,count_class1,color='b',label='>50k',alpha=0.5)
+            axe.bar(unique,count_class2,color='r',label='<=50k',bottom=count_class1,alpha=0.5)
+            axe.legend(loc=0)
+            axe.set_xlabel('attr values')
+            #axe.set_ylabel('counts')
+            axe.set_xticks(unique)
+            axe.set_title(attr_name)
+    plt.show()
+
+
+def plot_3d_scatter(data:np.ndarray):
+    """
+    根据3个与class相关度最高的属性，绘制三维散点图
+    :param data:
+    :return:
+    """
+    pass
 
 
 if __name__ == '__main__':
     """
-    处理顺序：
+    处理顺序：（结果：一个最终数据文件，一个统计表格，两张图片（bar、3d_scatter））
     1.remove_unknow_records(fname:str)处理原数据文件，得到清洗缺失属性的记录后的有效数据文件*.wiped，
         同时产生缺失属性记录的数据集*.dirty
     2.load_data(fname:str)读取*.wiped数据文件，对数据中的字符串内容做int映射，得到一个numpy的多维数组ndarray
     3.saveTxt(fname,data:np.ndarray)与load_np_file(fname)两个方法实现step2中的到的数据ndarray的保存与读取。
-    4.statistics(data:np.ndarray)，原始数据统计，对step2中得到的ndarray做统计分析：分为离散和连续属性的分析。
+    4.statistics_and_plot(data:np.ndarray)，原始数据统计及画图，对step2中得到的ndarray做统计分析：分为离散和连续属性的分析。
         这里ndarray中仅对字符串做了非有序的int映射，没有对连续型属性做区间离散化映射，故数据基本还是原始数据的信息
+    5.通过step4观测&统计到与class相关性最高的三个属性，做3维散点图，简单查看class的空间分布
     """
     data = load_np_file('preprocessed')
-    statistics(data)
+    statistics_and_plot(data)
+    plot_3d_scatter(data)
+

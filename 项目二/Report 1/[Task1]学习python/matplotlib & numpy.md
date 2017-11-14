@@ -44,11 +44,37 @@ Numpy是一种开源的扩展的数值计算库。
     # 显示的时候如果需要这个日期数据，用相应的画图函数
     plt.plot_date(date,otherdata)
     # 这个函数会识别float形式的日期数据
+
+    # 生成数据
+    #创造一组服从正态分布的定量数据
+    data = normal(0, 10, size=10)
+    #创造一组服从均匀分布的定性数据
+    data = randint(0, 10, size=10)
     ```
 
-    ​
+  - numpy统计函数：
 
-    ​
+    - 位置：均值mean(ndarray)、中位数median(ndarray)、众数mode(ndarray)
+
+    - 发散程度：极差ptp(data)、方差var(ndarray)、标准差std(ndarray)
+
+    - 异常（偏差程度，z-分数）：(data[0]-mean(data)) / std(data)，通常绝对值大于3视为异常
+
+    - 相关度（协方差COV、相关系数衡量CORRCOEF）：
+
+      ![img](http://images2015.cnblogs.com/blog/927391/201604/927391-20160428164241783-360115652.png)
+
+      ```python
+      #计算两组数的协方差
+      #参数bias=1表示结果需要除以N，否则只计算了分子部分
+      #返回结果为矩阵，第i行第j列的数据表示第i组数与第j组数的协方差。对角线为方差
+      cov(data, bias=1)
+
+      #计算两组数的相关系数
+      #返回结果矩阵，第i行第j列的数据表示第i组数与第j组数的相关系数。对角线为1
+      corrcoef(data)
+      ```
+
 
 练习一：numpy生成100以内随机数组，存储数组到文件，读取文件，数组排序、求最大值、最小值、均值、方差
 

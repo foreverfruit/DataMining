@@ -99,7 +99,7 @@ def remove_unknow_records(fname:str):
 
 def load_data(fname:str):
     """
-    读取数据文件,完成字符串数据到int数据的映射
+    读取数据文件,完成字符串数据到int数据的映射,对原来的continuous数据不做处理
     :param name: 数据文件名
     :return: ndarray类型的多维数组
     """
@@ -118,6 +118,16 @@ def load_data(fname:str):
                        converters={1:cvt1,3:cvt3,5:cvt5,6:cvt6,7:cvt7,8:cvt8,9:cvt9,13:cvt13,14:cvt14})
     return data
 
+
+def saveTxt(fname,data:np.ndarray):
+    """
+    以整数形式，按逗号分割保存数据到文本文件
+    :param fname:
+    :param data:
+    :return:
+    """
+    np.savetxt(fname, data, fmt='%d', delimiter=',')
+
 def load_np_file(fname):
     """
     读取经过numpy整数化之后输出的数据文件
@@ -127,18 +137,49 @@ def load_np_file(fname):
     return np.loadtxt(fname,int,delimiter=',')
 
 
-def statistics(data:ndarray):
+def statistics(data:np.ndarray):
     """
-    对数据集做统计：最大值，最小值，平均值，方差，相关性，对于某些属性选择性做统计，如国家，只需统计相关性
+    对数据集做统计：最大值，最小值，平均值，无偏样本标准差，相关性，对于某些属性选择性做统计
     :param data:
     :return:
     """
+    # 对连续性型数据做统计分析：min、max、mean、var、corf的属性
+    attnamelist = ['age', 'fnlwgt', 'education-num', 'capital-gain', 'captal-loss', 'hours-per-week']
+    print('连续属性的统计分析：')
+    column_class = data[:,14]
+    for i in range(len(attr_names)-1):
+        attr_name = attr_names[i]
+        if attr_name in attnamelist:
+            column = data[:, i]
+            v_min = np.min(column)
+            v_max = np.max(column)
+            v_mean = np.mean(column)
+            v_std = np.sqrt(( column.var() * column.size) / (column.size - 1))
+            v_corf = np.corrcoef(column,column_class)
+            print(attr_name,v_min,v_max,('%.2f' % v_mean),('%.2f' % v_std),('%.3f' % v_corf[0,1]))
 
-    for index,datalist in enumerate(data):
-
+    # 对离散型属性做分布统计，各取值的占比以及对类分布情况(二分条形图)
+    attnamelist = ['workclass', 'education', 'marital-status', 'occupation','relationship', 'race', 'sex',  'hours-per-week',  'class']
+    print('离散数学的统计分析：')
+    for i in range(len(attr_names) - 1):
+        attr_name = attr_names[i]
+        if attr_name in attnamelist:
+            column = data[:, i]
+            unique,index,counts = np.unique(column, return_index=True, return_counts=True, axis=0)
+            for j in range(unique.size):
+                print('%d %d %.2f\t' % (unique[j],counts[j],counts[j]/column.size),end='')
+            print()
 
 
 if __name__ == '__main__':
-    #remove_unknow_records('adult.data')
-    data = load_data('adult.data.wiped')
-    np.savetxt('preprocessed',data,fmt='%d',delimiter=',')
+    """
+    处理顺序：
+    1.remove_unknow_records(fname:str)处理原数据文件，得到清洗缺失属性的记录后的有效数据文件*.wiped，
+        同时产生缺失属性记录的数据集*.dirty
+    2.load_data(fname:str)读取*.wiped数据文件，对数据中的字符串内容做int映射，得到一个numpy的多维数组ndarray
+    3.saveTxt(fname,data:np.ndarray)与load_np_file(fname)两个方法实现step2中的到的数据ndarray的保存与读取。
+    4.statistics(data:np.ndarray)，原始数据统计，对step2中得到的ndarray做统计分析：分为离散和连续属性的分析。
+        这里ndarray中仅对字符串做了非有序的int映射，没有对连续型属性做区间离散化映射，故数据基本还是原始数据的信息
+    """
+    data = load_np_file('preprocessed')
+    statistics(data)

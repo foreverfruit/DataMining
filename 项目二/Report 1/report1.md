@@ -43,7 +43,9 @@
 
   - 像age、edu_num、hours_pw这样的属性，取值空间较小，可以直接简单的固定区间长度做映射。edu_num不做处理。age、hours_pw的处理如下公式：
 
-    $$age'=age/5,hours_pw=hours_pw/5.(都采用5的区间映射到0到20的取值范围上)$$
+    $$age'=age/5,hours\_pw=hours\_pw/5$$
+
+    都采用长度为5的划分区间映射到0到20的取值范围上.
 
   - 对fnlwgt、cpl_gain、cpl_loss这样大区间的量，先做一个离群点的判断，剔除上下界上的离群点，再对剩下的数据做取对数操作之后划分区间映射。
 

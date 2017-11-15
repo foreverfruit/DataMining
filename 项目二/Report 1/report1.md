@@ -4,7 +4,7 @@
 
 # Project 2 _ Report 1
 
-本课程相关内容已划分好文件夹全部上传到Github，Clone地址如下：
+本课程相关内容已划分好文件夹全部上传到Github，地址如下：
 
 [https://github.com/foreverfruit/DataMining.git](https://github.com/foreverfruit/DataMining.git)
 
@@ -22,24 +22,88 @@
 
 ## Task1_数据预处理
 
-***数据预处理结果***
-
-得到一个处理过得数据文件data.ready，一张表格（连续型数据的统计信息），多张图片（多张离散属性各值的条形图，三张三维散点图）。
-
-***内容如下***
-
-1.去除缺失数据。本数据集中存在属性缺失的记录数量为xxx，占比xxx，不做额外处理，直接舍弃。
+1.去除缺失数据。本数据集训练集中存在属性缺失的记录数量为2399，占比0.0737，不做额外处理，直接舍弃。
 
 2.对连续型数据做简单统计：最大值、最小值、均值、方差、与类别的相关度，统计结果如表所示：
 
+| 属性名      | 最小值   | 最大值     | 均值        | 标准差       | 相关性    |
+| -------- | ----- | ------- | --------- | --------- | ------ |
+| age      | 17    | 90      | 38.44     | 13.13     | 0.242  |
+| fnlwgt   | 13769 | 1484705 | 189793.83 | 105652.97 | -0.009 |
+| edu_num  | 1     | 16      | 10.12     | 2.55      | 0.335  |
+| cpl_gain | 0     | 99999   | 1092.01   | 7406.35   | 0.221  |
+| cpl_loss | 0     | 4356    | 88.37     | 404.30    | 0.150  |
+| hours_pw | 1     | 99      | 40.93     | 11.98     | 0.229  |
+
 3.数据离散化：
 
-- 对连续数据进行离散化映射，区间到int值的映射，并保证区间的有序性。
-- 对字符串数据进行离散化映射，字符串到int的映射，这里没有有序性。***存在一个问题：如何衡量该属性与类别的相关性？1）根据经验，对字符串做排序，这样得到的映射是有序的，可以求得与类别属性的相关性。2）不做相关性分析，直接用图的方式表现属性取值与类别的分布关系（这里采用第二种，即可视化的方式，但感觉还是不如数学运算可靠）***
+- 对连续数据进行离散化映射，区间到int值的映射，并保证区间的有序性。离散化方法：
+
+  - 先看分布情况，再根据分布做映射。
+
+  - 像age、edu_num、hours_pw这样的属性，取值空间较小，可以直接简单的固定区间长度做映射。edu_num不做处理。age、hours_pw的处理如下公式：
+
+    $$age'=age/5,hours_pw=hours_pw/5.(都采用5的区间映射到0到20的取值范围上)$$
+
+  - 对fnlwgt、cpl_gain、cpl_loss这样大区间的量，先做一个离群点的判断，剔除上下界上的离群点，再对剩下的数据做取对数操作之后划分区间映射。
+
+    fnlwgt：先取log运算，再划分到（log后的取值范围[9,15]，按0.5长度做等区间长度划分）等长区间做映射。图如下 fnlwgt_log_hist.png
+
+    ```python
+    fnlwgt = np.loadtxt('preprocess',int,delimiter=',',usecols=2)
+    a = np.log(fnlwgt)
+
+    figure = plt.figure()
+    ax1 = figure.add_subplot(121)
+    ax1.hist(fnlwgt,normed=True,bins=100,color='r',alpha=0.5)
+    ax1.set_title('fnlwgt')
+
+    ax2 = figure.add_subplot(122)
+    ax2.hist(a,normed=True,bins=100,color='b',alpha=0.5)
+    ax2.set_title('log(fnlwgt)')
+    plt.show()
+    ```
+
+    cpl_gain、cpl_loss：先看hist分布图（如下），发现值分布非常集中，但是值域很广。对这两组属性的处理先后尝试了多种办法，过程如下。cpl_gain_loss_original
+
+    1. 采用百分位数截断。排序后先截断（上下各截断5%），留取中间的90%做映射到[1,k]，最后对下界5%的数据取0，上界5%数据取k+1，但实际效果不好，因为这个阈值不好取，取了也不能简单说明是离群的，而且很受数据分布影响，如两组数据的分布都集中在5%的的区间以内，也就说[0,95%]的数据取值都是0，故弃用这种方法。分析图如下sorted_cpl_plot
+    2. 采用偏差程度（z-分数）作为偏离程度的衡量，绝对值超过3的认为是异常(对于标准差不为0或不接近0的数据，z-分数是有意义的，且通常以3作为异常值的评判阈值)，剩下的数据映射到[1,k]范围内，最后对上下界异常区间内的数据分别映射为0和k+1.但实际实现中效果不好，因为这个离群的阈值和标准std的大小很有关系，不好取，如cpl_gain取threshold为[-0.2,0]任然能满足该区间内数据占比大于90%，但没法解释，因为这样是认为超过均值的所有元素都是离群的被舍弃，这不科学，且合理数据区域的取值区间仍然很大[0,1151]。
+    3. 类似百分位数思想，针对数据集中的特点，采用均值的上下p%的值域内的数据做为合理数据，之外的数据认为离群点。发现90%上的数据都是0，剩下的元素取值很大。这种办法还是不能解决问题。
+    4. // TODO 未解决。目前先简单做标记，对不为0的元素取1做标志，不做量的处理。
+
+    连续属性离散之后的统计数据,。
+
+    | 属性名      | 最小值  | 最大值  | 均值    | 标准差  | 相关性    |
+    | -------- | ---- | ---- | ----- | ---- | ------ |
+    | age      | 3    | 18   | 7.29  | 2.65 | 0.240  |
+    | fnlwgt   | 1    | 10   | 5.49  | 1.30 | -0.000 |
+    | edu_num  | 1    | 16   | 10.12 | 2.55 | 0.335  |
+    | cpl_gain | 0    | 1    | 0.08  | 0.28 | 0.266  |
+    | cpl_loss | 0    | 1    | 0.05  | 0.21 | 0.138  |
+    | hours_pw | 0    | 19   | 8.11  | 2.41 | 0.230  |
+
+- 对字符串数据进行离散化映射，字符串到int的映射，这里没有有序性。***存在一个问题：如何衡量该属性与类别的相关性？1）根据经验，对字符串做排序，这样得到的映射是有序的，可以求得与类别属性的相关性。2）不做相关性分析，直接用图的方式表现属性取值与类别的区分关系（这里采用第二种，即可视化的方式，但感觉还是不如数学运算可靠）***
+
+  ```python
+  # 映射表：无排序映射
+  # 数据映射字典（字符串型数据到整形映射）
+  dic_workclass = {'Private':1, 'Self-emp-not-inc':2, 'Self-emp-inc':3, 'Federal-gov':4,'Local-gov':4, 'State-gov':5, 'Without-pay':6, 'Never-worked':7}
+  dic_education = {'Bachelors':1, 'Some-college':2, '11th':3, 'HS-grad':4, 'Prof-school':5,'Assoc-acdm':6, 'Assoc-voc':7, '9th':8, '7th-8th':9, '12th':10, 'Masters':11,'1st-4th':12, '10th':13, 'Doctorate':14, '5th-6th':15, 'Preschool':15}
+  dic_marital_status= {'Married-civ-spouse':1, 'Divorced':2, 'Never-married':3, 'Separated':4,'Widowed':5, 'Married-spouse-absent':6, 'Married-AF-spouse':7}
+  dic_occupation = {'Tech-support':1, 'Craft-repair':2, 'Other-service':3, 'Sales':4, 'Exec-managerial':5, 'Prof-specialty':6, 'Handlers-cleaners':7, 'Machine-op-inspct':8, 'Adm-clerical':9, 'Farming-fishing':10, 'Transport-moving':11, 'Priv-house-serv':12,  'Protective-serv':13, 'Armed-Forces':14}
+  dic_relationship = {'Wife':1, 'Own-child':2, 'Husband':3, 'Not-in-family':4,'Other-relative':5, 'Unmarried':6}
+  dic_race = {'White':1, 'Asian-Pac-Islander':2, 'Amer-Indian-Eskimo':3, 'Other':4, 'Black':5}
+  dic_sex = {'Female':1, 'Male':2}
+  dic_native_country =  {'United-States':1, 'Cambodia':2, 'England':3, 'Puerto-Rico':4,'Canada':5, 'Germany':6, 'Outlying-US(Guam-USVI-etc)':7, 'India':8,'Japan':9, 'Greece':10, 'South':11, 'China':12, 'Cuba':13, 'Iran':14, 'Honduras':15, 'Philippines':16, 'Italy':17, 'Poland':18, 'Jamaica':19,'Vietnam':20, 'Mexico':21, 'Portugal':22, 'Ireland':23, 'France':24,'Dominican-Republic':25, 'Laos':26, 'Ecuador':27, 'Taiwan':12, 'Haiti':29,'Columbia':30, 'Hungary':31, 'Guatemala':32, 'Nicaragua':33, 'Scotland':28,'Thailand':34, 'Yugoslavia':35, 'El-Salvador':36, 'Trinadad&Tobago':37,'Peru':38, 'Hong':39, 'Holand-Netherlands':40}
+  dic_class = {'<=50K':0,'>50K':1}
+  ```
+
+  图str_attrs_2_hist.png，数据表
+
+  结论：解释性不强，没有明确的衡量这种区分度的方法
 
 4.可视化（分布图、最大相关性的属性建立的3D散点图）
 
-- 字符串类型的属性（离散）的stacked bar。用以观测离散属性与类型分布的关系
 - 与类别属性具有最高相关度的3个连续属性为3个轴，绘制的类型3D散点图
 - 与类别属性最相关的3个离散属性为3个轴，绘制的类型3D散点图
 - 选取3个最高相关性的属性绘制的类型3D散点图

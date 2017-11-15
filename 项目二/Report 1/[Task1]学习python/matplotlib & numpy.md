@@ -76,6 +76,20 @@ Numpy是一种开源的扩展的数值计算库。
       ```
 
 
+      | 包            | 方法       | 说明             |
+      | ------------ | -------- | -------------- |
+      | numpy        | array    | 创造一组数          |
+      | numpy.random | normal   | 创造一组服从正态分布的定量数 |
+      | numpy.random | randint  | 创造一组服从均匀分布的定性数 |
+      | numpy        | mean     | 计算均值           |
+      | numpy        | median   | 计算中位数          |
+      | scipy.stats  | mode     | 计算众数           |
+      | numpy        | ptp      | 计算极差           |
+      | numpy        | var      | 计算方差           |
+      | numpy        | std      | 计算标准差          |
+      | numpy        | cov      | 计算协方差          |
+      | numpy        | corrcoef | 计算相关系数         |
+
 练习一：numpy生成100以内随机数组，存储数组到文件，读取文件，数组排序、求最大值、最小值、均值、方差
 
 ```python

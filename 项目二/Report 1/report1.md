@@ -47,7 +47,9 @@
 
   - 对fnlwgt、cpl_gain、cpl_loss这样大区间的量，先做一个离群点的判断，剔除上下界上的离群点，再对剩下的数据做取对数操作之后划分区间映射。
 
-    fnlwgt：先取log运算，再划分到（log后的取值范围[9,15]，按0.5长度做等区间长度划分）等长区间做映射。图如下 fnlwgt_log_hist.png
+    fnlwgt：先取log运算，再划分到（log后的取值范围[9,15]，按0.5长度做等区间长度划分）等长区间做映射。图如下
+
+     ![fnlwgt_log_hist.png](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/fnlwgt_log_hist.png)
 
     ```python
     fnlwgt = np.loadtxt('preprocess',int,delimiter=',',usecols=2)
@@ -64,14 +66,16 @@
     plt.show()
     ```
 
-    cpl_gain、cpl_loss：先看hist分布图（如下），发现值分布非常集中，但是值域很广。对这两组属性的处理先后尝试了多种办法，过程如下。cpl_gain_loss_original
+    cpl_gain、cpl_loss：先看hist分布图（如下），发现值分布非常集中，但是值域很广。对这两组属性的处理先后尝试了多种办法，过程如下。
 
-    1. 采用百分位数截断。排序后先截断（上下各截断5%），留取中间的90%做映射到[1,k]，最后对下界5%的数据取0，上界5%数据取k+1，但实际效果不好，因为这个阈值不好取，取了也不能简单说明是离群的，而且很受数据分布影响，如两组数据的分布都集中在5%的的区间以内，也就说[0,95%]的数据取值都是0，故弃用这种方法。分析图如下sorted_cpl_plot
+    ![cpl_gain_loss_original](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/cpl_gain_loss_original.png)
+
+    1. 采用百分位数截断。排序后先截断（上下各截断5%），留取中间的90%做映射到[1,k]，最后对下界5%的数据取0，上界5%数据取k+1，但实际效果不好，因为这个阈值不好取，取了也不能简单说明是离群的，而且很受数据分布影响，如两组数据的分布都集中在5%的的区间以内，也就说[0,95%]的数据取值都是0，故弃用这种方法。![sorted_cpl_plot](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/sorted_cpl_plot.png)
     2. 采用偏差程度（z-分数）作为偏离程度的衡量，绝对值超过3的认为是异常(对于标准差不为0或不接近0的数据，z-分数是有意义的，且通常以3作为异常值的评判阈值)，剩下的数据映射到[1,k]范围内，最后对上下界异常区间内的数据分别映射为0和k+1.但实际实现中效果不好，因为这个离群的阈值和标准std的大小很有关系，不好取，如cpl_gain取threshold为[-0.2,0]任然能满足该区间内数据占比大于90%，但没法解释，因为这样是认为超过均值的所有元素都是离群的被舍弃，这不科学，且合理数据区域的取值区间仍然很大[0,1151]。
     3. 类似百分位数思想，针对数据集中的特点，采用均值的上下p%的值域内的数据做为合理数据，之外的数据认为离群点。发现90%上的数据都是0，剩下的元素取值很大。这种办法还是不能解决问题。
     4. // TODO 未解决。目前先简单做标记，对不为0的元素取1做标志，不做量的处理。
 
-    连续属性离散之后的统计数据,。
+    连续属性离散之后的统计数据。
 
     | 属性名      | 最小值  | 最大值  | 均值    | 标准差  | 相关性    |
     | -------- | ---- | ---- | ----- | ---- | ------ |
@@ -98,15 +102,23 @@
   dic_class = {'<=50K':0,'>50K':1}
   ```
 
-  图str_attrs_2_hist.png，数据表
+  ![str_attrs_2_hist.png](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/str_attrs_2_hist.png)
 
   结论：解释性不强，没有明确的衡量这种区分度的方法
 
 4.可视化（分布图、最大相关性的属性建立的3D散点图）
 
 - 与类别属性具有最高相关度的3个连续属性为3个轴，绘制的类型3D散点图
+
+  ![3d1](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/3D_1_continuous_att.png)
+
 - 与类别属性最相关的3个离散属性为3个轴，绘制的类型3D散点图
-- 选取3个最高相关性的属性绘制的类型3D散点图
+
+  ![3d2](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/3D_2_str_att.png)
+
+- 选取3个相关性较高(观测结论)的属性绘制的类型3D散点图
+
+  ![3d3](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/3D_3.png)
 
 ---
 

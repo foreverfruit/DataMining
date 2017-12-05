@@ -155,7 +155,7 @@ native-country: 0.102
 
 相关性最高的三个属性：marital-status、relationship、education，以这三个属性绘制的散点图如下：
 
-![3D图](xxx)
+![3D图](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/3D.png)
 
 映射关系：之后测试的时候，测试对象需要按照该关系做数据转换，才能应用到分类算法中
 
@@ -195,7 +195,7 @@ native-country ------------------
 - 连续属性映射如下：
   - age-0，hours_pw-12，取值在(0,100)以内，直接除以100,x'=x/100
   - edu_num-4，（1,16），x‘=(x-1)/15
-  -  fnlwgt-2，取值范围很大，先取log，log后的取值为（9,15），x' = (x-9)/6
+  - fnlwgt-2，取值范围很大，先取log，log后的取值为（9,15），x' = (x-9)/6
   - cpl_loss/gain,(0,4356),x'=x/4356，这里取loss/gain的比值存于原gain-10列，loss-11列舍弃
   - **由于这里采用训练集的最大值最小值，实际测试中，若越界，不做额外处理，直接取边界**
 

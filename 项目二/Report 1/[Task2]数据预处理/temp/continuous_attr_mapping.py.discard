@@ -14,7 +14,6 @@ def where_demo():
         if a[i,0]==row[0] and a[i,4]==row[4]:
             print(i,a[i])
 
-    # where一次只能判断一个属性条件，不能多个条件并列筛选
     r = np.where(a[:,0]==row[0])
     print(a[np.where(a[:,0]==0)])
 

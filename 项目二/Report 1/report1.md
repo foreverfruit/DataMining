@@ -90,20 +90,6 @@
 
 - 对字符串数据进行离散化映射，字符串到int的映射，这里没有有序性。***存在一个问题：如何衡量该属性与类别的相关性？1）根据经验，对字符串做排序，这样得到的映射是有序的，可以求得与类别属性的相关性。2）不做相关性分析，直接用图的方式表现属性取值与类别的区分关系（这里采用第二种，即可视化的方式，但感觉还是不如数学运算可靠）***
 
-  ```python
-  # 映射表：无排序映射
-  # 数据映射字典（字符串型数据到整形映射）
-  dic_workclass = {'Private':1, 'Self-emp-not-inc':2, 'Self-emp-inc':3, 'Federal-gov':4,'Local-gov':4, 'State-gov':5, 'Without-pay':6, 'Never-worked':7}
-  dic_education = {'Bachelors':1, 'Some-college':2, '11th':3, 'HS-grad':4, 'Prof-school':5,'Assoc-acdm':6, 'Assoc-voc':7, '9th':8, '7th-8th':9, '12th':10, 'Masters':11,'1st-4th':12, '10th':13, 'Doctorate':14, '5th-6th':15, 'Preschool':15}
-  dic_marital_status= {'Married-civ-spouse':1, 'Divorced':2, 'Never-married':3, 'Separated':4,'Widowed':5, 'Married-spouse-absent':6, 'Married-AF-spouse':7}
-  dic_occupation = {'Tech-support':1, 'Craft-repair':2, 'Other-service':3, 'Sales':4, 'Exec-managerial':5, 'Prof-specialty':6, 'Handlers-cleaners':7, 'Machine-op-inspct':8, 'Adm-clerical':9, 'Farming-fishing':10, 'Transport-moving':11, 'Priv-house-serv':12,  'Protective-serv':13, 'Armed-Forces':14}
-  dic_relationship = {'Wife':1, 'Own-child':2, 'Husband':3, 'Not-in-family':4,'Other-relative':5, 'Unmarried':6}
-  dic_race = {'White':1, 'Asian-Pac-Islander':2, 'Amer-Indian-Eskimo':3, 'Other':4, 'Black':5}
-  dic_sex = {'Female':1, 'Male':2}
-  dic_native_country =  {'United-States':1, 'Cambodia':2, 'England':3, 'Puerto-Rico':4,'Canada':5, 'Germany':6, 'Outlying-US(Guam-USVI-etc)':7, 'India':8,'Japan':9, 'Greece':10, 'South':11, 'China':12, 'Cuba':13, 'Iran':14, 'Honduras':15, 'Philippines':16, 'Italy':17, 'Poland':18, 'Jamaica':19,'Vietnam':20, 'Mexico':21, 'Portugal':22, 'Ireland':23, 'France':24,'Dominican-Republic':25, 'Laos':26, 'Ecuador':27, 'Taiwan':12, 'Haiti':29,'Columbia':30, 'Hungary':31, 'Guatemala':32, 'Nicaragua':33, 'Scotland':28,'Thailand':34, 'Yugoslavia':35, 'El-Salvador':36, 'Trinadad&Tobago':37,'Peru':38, 'Hong':39, 'Holand-Netherlands':40}
-  dic_class = {'<=50K':0,'>50K':1}
-  ```
-
   ![str_attrs_2_hist.png](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/str_attrs_2_hist.png)
 
   结论：解释性不强，没有明确的衡量这种区分度的方法
@@ -121,6 +107,97 @@
 - 选取3个相关性较高(观测结论)的属性绘制的类型3D散点图
 
   ![3d3](https://raw.githubusercontent.com/foreverfruit/DataMining/master/%E9%A1%B9%E7%9B%AE%E4%BA%8C/Report%201/%5BTask2%5D%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/pic/3D_3.png)
+
+
+---
+
+## 数据预处理重做
+
+之前的做法存在问题，且没有选定分类方法，所以预处理不当。现选定KNN算法，则数据预处理的时候需要做归一化处理，以平衡所有属性对距离度量的影响。
+
+处理还是分为两个部分：连续属性和标称属性
+
+1.连续属性
+
+```python
+# 属性名-列标号
+age-0,fnlwgt-2,edu_num-4,cpl_gain-10,cpl_loss-11,hours_pw-12
+```
+
+以上属性根据统计的取值范围，做以下操作：
+
+- cpl_loss和cpl_gain，采用比率的方法合并为一个属性
+- 采用最大值最小值归一方法
+
+2.标称属性
+
+为了便于统计，保留原来的整数映射，之后，根据每一个属性值的取class 1的概率做映射。这么做的效果就是，假设A属性取值为'a','b','c','d','e',若取'd'的对象0.99概率为类1，取'e'的对象0.98概率为类1，那么用概率作为属性值的映射，这两种取值看做是比较邻近的。也就是说，你和我近不近，看你和我离类1的距离（概率）近不近
+
+3.统计信息及映射关系
+
+```python
+------------相关度-----------
+age: 0.242
+workclass: 0.160
+fnlwgt: -0.001
+education: 0.367
+education-num: 0.335
+marital-status: 0.448
+occupation: 0.350
+relationship: 0.455
+race: 0.100
+sex: 0.217
+capital-loss/gain: 0.150
+hours-per-week: 0.229
+native-country: 0.102
+-----------------------
+```
+
+相关性最高的三个属性：marital-status、relationship、education，以这三个属性绘制的散点图如下：
+
+![3D图](xxx)
+
+映射关系：之后测试的时候，测试对象需要按照该关系做数据转换，才能应用到分类算法中
+
+- 标称属性映射如下：
+
+```python
+# step 1 数据映射字典（字符串型数据到整形映射），这里没有什么意义，仅仅为了统计计算方便
+dic_workclass = {'Private':1, 'Self-emp-not-inc':2, 'Self-emp-inc':3, 'Federal-gov':4,'Local-gov':4, 'State-gov':5, 'Without-pay':6, 'Never-worked':7}
+dic_education = {'Bachelors':1, 'Some-college':2, '11th':3, 'HS-grad':4, 'Prof-school':5,'Assoc-acdm':6, 'Assoc-voc':7, '9th':8, '7th-8th':9, '12th':10, 'Masters':11,'1st-4th':12, '10th':13, 'Doctorate':14, '5th-6th':15, 'Preschool':15}
+dic_marital_status= {'Married-civ-spouse':1, 'Divorced':2, 'Never-married':3, 'Separated':4,'Widowed':5, 'Married-spouse-absent':6, 'Married-AF-spouse':7}
+dic_occupation = {'Tech-support':1, 'Craft-repair':2, 'Other-service':3, 'Sales':4, 'Exec-managerial':5, 'Prof-specialty':6, 'Handlers-cleaners':7, 'Machine-op-inspct':8, 'Adm-clerical':9, 'Farming-fishing':10, 'Transport-moving':11, 'Priv-house-serv':12,  'Protective-serv':13, 'Armed-Forces':14}
+dic_relationship = {'Wife':1, 'Own-child':2, 'Husband':3, 'Not-in-family':4,'Other-relative':5, 'Unmarried':6}
+dic_race = {'White':1, 'Asian-Pac-Islander':2, 'Amer-Indian-Eskimo':3, 'Other':4, 'Black':5}
+dic_sex = {'Female':1, 'Male':2}
+dic_native_country =  {'United-States':1, 'Cambodia':2, 'England':3, 'Puerto-Rico':4,'Canada':5, 'Germany':6, 'Outlying-US(Guam-USVI-etc)':7, 'India':8,'Japan':9, 'Greece':10, 'South':11, 'China':12, 'Cuba':13, 'Iran':14, 'Honduras':15, 'Philippines':16, 'Italy':17, 'Poland':18, 'Jamaica':19,'Vietnam':20, 'Mexico':21, 'Portugal':22, 'Ireland':23, 'France':24,'Dominican-Republic':25, 'Laos':26, 'Ecuador':27, 'Taiwan':12, 'Haiti':29,'Columbia':30, 'Hungary':31, 'Guatemala':32, 'Nicaragua':33, 'Scotland':28,'Thailand':34, 'Yugoslavia':35, 'El-Salvador':36, 'Trinadad&Tobago':37,'Peru':38, 'Hong':39, 'Holand-Netherlands':40}
+dic_class = {'<=50K':0,'>50K':1}
+
+# 这里才是最后的映射，根据的是每个取值中class1的概率
+workclass ------------------
+{1.0: 0.21879206676837476, 2.0: 0.2857142857142857, 3.0: 0.55865921787709494, 4.0: 0.32358803986710966, 5.0: 0.26896012509773259, 6.0: 0.0}
+education ------------------
+{1.0: 0.42149088025376685, 2.0: 0.20005989817310571, 3.0: 0.056297709923664119, 4.0: 0.16432926829268293, 5.0: 0.74907749077490771, 6.0: 0.25396825396825395, 7.0: 0.26319816373374139, 8.0: 0.054945054945054944, 9.0: 0.06283662477558348, 10.0: 0.076923076923076927, 11.0: 0.56422864167178854, 12.0: 0.039735099337748346, 13.0: 0.071951219512195116, 14.0: 0.7466666666666667, 15.0: 0.036036036036036036}
+marital-status ------------------
+{1.0: 0.45495911837895486, 2.0: 0.10726150925486473, 3.0: 0.048324079786140242, 4.0: 0.070287539936102233, 5.0: 0.096735187424425634, 6.0: 0.083783783783783788, 7.0: 0.47619047619047616}
+occupation ------------------
+{1.0: 0.30482456140350878, 2.0: 0.22531017369727047, 3.0: 0.041095890410958902, 4.0: 0.27064732142857145, 5.0: 0.48522044088176353, 6.0: 0.44848935116394256, 7.0: 0.061481481481481484, 8.0: 0.12461851475076297, 9.0: 0.13383499059392637, 10.0: 0.11627906976744186, 11.0: 0.20292620865139949, 12.0: 0.006993006993006993, 13.0: 0.32608695652173914, 14.0: 0.1111111111111111}
+relationship ------------------
+{1.0: 0.49359886201991465, 2.0: 0.014330497089117778, 3.0: 0.45566877958757923, 4.0: 0.10652342738804038, 5.0: 0.03937007874015748, 6.0: 0.066313823163138233}
+race ------------------
+{1.0: 0.26371804264836307, 2.0: 0.27709497206703909, 3.0: 0.11888111888111888, 4.0: 0.090909090909090912, 5.0: 0.12992545260915869}
+sex ------------------
+{1.0: 0.11367818442036394, 2.0: 0.3138370951913641}
+native-country ------------------
+{1.0: 0.25432664339732403, 2.0: 0.3888888888888889, 3.0: 0.34883720930232559, 4.0: 0.11009174311926606, 5.0: 0.3364485981308411, 6.0: 0.34375, 7.0: 0.0, 8.0: 0.40000000000000002, 9.0: 0.38983050847457629, 10.0: 0.27586206896551724, 11.0: 0.19718309859154928, 12.0: 0.35454545454545455, 13.0: 0.27173913043478259, 14.0: 0.42857142857142855, 15.0: 0.083333333333333329, 16.0: 0.31914893617021278, 17.0: 0.35294117647058826, 18.0: 0.19642857142857142, 19.0: 0.125, 20.0: 0.078125, 21.0: 0.054098360655737705, 22.0: 0.11764705882352941, 23.0: 0.20833333333333334, 24.0: 0.44444444444444442, 25.0: 0.029850746268656716, 26.0: 0.11764705882352941, 27.0: 0.14814814814814814, 28.0: 0.18181818181818182, 29.0: 0.095238095238095233, 30.0: 0.035714285714285712, 31.0: 0.23076923076923078, 32.0: 0.047619047619047616, 33.0: 0.060606060606060608, 34.0: 0.17647058823529413, 35.0: 0.375, 36.0: 0.089999999999999997, 37.0: 0.1111111111111111, 38.0: 0.066666666666666666, 39.0: 0.31578947368421051, 40.0: 0.0}
+```
+
+- 连续属性映射如下：
+  - age-0，hours_pw-12，取值在(0,100)以内，直接除以100,x'=x/100
+  - edu_num-4，（1,16），x‘=(x-1)/15
+  -  fnlwgt-2，取值范围很大，先取log，log后的取值为（9,15），x' = (x-9)/6
+  - cpl_loss/gain,(0,4356),x'=x/4356，这里取loss/gain的比值存于原gain-10列，loss-11列舍弃
+  - **由于这里采用训练集的最大值最小值，实际测试中，若越界，不做额外处理，直接取边界**
 
 ---
 

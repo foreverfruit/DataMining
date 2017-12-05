@@ -274,23 +274,23 @@ if __name__ == '__main__':
     8.saveTxt(fname,data:np.ndarray)与load_np_file(fname)两个方法实现ndarray的保存与读取。
     """
     # 1. 去除不全的数据，并保存文件
-    #remove_unknow_records('adult.data')
+    remove_unknow_records('adult.data')
     # 2. 读取去除之后的所有的完整数据集，同时对字符串数据做映射
-    #data = load_data('adult.data.wiped')
+    data = load_data('adult.data.wiped')
     # 3. 保存str映射之后的数据到.continuous(表示该数据文件中连续属性未处理)
-    #saveTxt('adult.continuous',data)
+    saveTxt('adult.continuous',data)
     # 4. 加载数据
     data = load_np_file('adult.continuous')
     # 5. 字符串属性（离散）作图与统计分析（各属性取各值的类占比情况）
     plot_discrete(data)
     plot_3d_scatter(data) # 这里3D散点的是原始连续数据的属性
     # 6. 对原始的连续属性做统计
-    #statistics_continuous(data)
+    statistics_continuous(data)
     # 7. 对连续属性做离散映射
     mapping(data)
     # 8. 对连续属性离散映射之后再做统计
-    #statistics_continuous(data)
+    statistics_continuous(data)
     # 9. 3D散点图
-    #plot_3d_scatter(data) # 这里3D散点的是离散化后的属性
+    plot_3d_scatter(data) # 这里3D散点的是离散化后的属性
     # 10. 保存数据
-    #saveTxt('adult.done', data)
+    saveTxt('adult.done', data)

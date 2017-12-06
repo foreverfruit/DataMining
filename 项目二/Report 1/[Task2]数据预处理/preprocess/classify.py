@@ -6,6 +6,7 @@
 4.结果比对，分析错误率
 '''
 import numpy as np
+from sklearn import neighbors
 import  preprocess as pp
 
 # 标称值映射关系
@@ -81,13 +82,24 @@ def do_classify(train_filename:str,test_filename:str):
     a = np.loadtxt(fname=train_filename+'.done', delimiter=',', dtype=float, unpack=True)
     train_attrs = np.column_stack((a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[12],a[13]))
     train_class = a[14]
-    # TODO 训练
+    # 训练
+    knn = neighbors.KNeighborsClassifier()
+    knn.fit(train_attrs, train_class)
+
     # 测试集
     b = np.loadtxt(fname=test_filename+'.done', delimiter=',', dtype=float, unpack=True)
     test_attrs = np.column_stack((b[0],b[1],b[2],b[3],b[4],b[5],b[6],b[7],b[8],b[9],b[10],b[12],b[13]))
     test_class = b[14]
-    # TODO 预测
-    # TODO 计算正确率
+    # 预测
+    result = knn.predict(test_attrs)
+
+    # 计算正确率
+    count = 0
+    for i in range(result.shape[0]):
+        if test_class[i]==result[i]:
+            count+=1
+
+    print('result:',count/result.size)
 
 
 if __name__ == '__main__':

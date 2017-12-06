@@ -163,8 +163,8 @@ def handle_continuous(data:np.ndarray,filename:str):
         # cpl_loss/gain,(0,4356)
         data[i,10] = data[i,10]/4356
 
-    # 保存文件,精度取到小数点后5位
-    np.savetxt(filename+'.done', data, fmt='%.5f', delimiter=',')
+    # 保存文件,精度取到小数点后8位
+    np.savetxt(filename+'.done', data, fmt='%.8f', delimiter=',')
     return data
 
 

@@ -105,8 +105,8 @@ def do_classify(train_filename:str,test_filename:str):
 
 def my_classify1(train_filename:str,test_filename:str):
     '''
-    我的分类算法：懒惰法，粗糙模型
-
+    我的分类算法：懒惰法，粗糙模型，暴力比较距离
+    结果：错误，没有平衡不同类数据量对力的影响，如A类10000个，B类10个，那么K取多少，才能决定了测试数据的位置和最终预测的分类的关系
     '''
     G = 1
     K = 2
@@ -115,7 +115,7 @@ def my_classify1(train_filename:str,test_filename:str):
     train = np.loadtxt(fname=train_filename + '.done', delimiter=',', dtype=float, unpack=False)
     train_a = train[np.where(train[:, 14] == 0)]
     train_b = train[np.where(train[:, 14] == 1)]
-
+    print('a类占比:',train_a.shape[0]/train.shape[0])
 
     # 测试集
     test = np.loadtxt(fname=test_filename + '.done', delimiter=',', dtype=float, unpack=False)
@@ -173,6 +173,7 @@ def my_classify1(train_filename:str,test_filename:str):
         elif var_predict<0:
             predict_class = 1
 
+        print('预测类：',predict_class,'预测值：',var_predict,'真实类：',class_test)
         if(predict_class == class_test):
             count += 1
 

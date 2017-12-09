@@ -82,6 +82,7 @@ def do_classify(train_filename:str,test_filename:str):
     a = np.loadtxt(fname=train_filename+'.done', delimiter=',', dtype=float, unpack=True)
     train_attrs = np.column_stack((a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[12],a[13]))
     train_class = a[14]
+
     # 训练
     knn = neighbors.KNeighborsClassifier()
     knn.fit(train_attrs, train_class)
@@ -102,9 +103,88 @@ def do_classify(train_filename:str,test_filename:str):
     print('result:',count/result.size)
 
 
+def my_classify1(train_filename:str,test_filename:str):
+    '''
+    我的分类算法：懒惰法，粗糙模型
+
+    '''
+    G = 1
+    K = 2
+
+    # 训练集
+    train = np.loadtxt(fname=train_filename + '.done', delimiter=',', dtype=float, unpack=False)
+    train_a = train[np.where(train[:, 14] == 0)]
+    train_b = train[np.where(train[:, 14] == 1)]
+
+
+    # 测试集
+    test = np.loadtxt(fname=test_filename + '.done', delimiter=',', dtype=float, unpack=False)
+
+    cors = []
+    # 计算训练集每个维度相关度
+    for i in range(train.shape[1]-1):
+        if i==11:
+            # 跳过列11，但是为了后面的计算，这个值还是要占个位，否则后续的计算会数组越界
+            cors.append(-1)
+            continue
+        cors.append(np.corrcoef(train[:,i],train[:,14])[0,1])
+
+    count = 0
+    fail_count = 0
+    # 遍历测试每一个测试数据
+    for i in test:
+        # 当前测试对象额实际类标号
+        class_test = i[14]
+        # 当前测试对象的预测标号，大于0表示a类，小于0表示b类
+        var_predict = 0
+        # 遍历每一个属性（维度）
+        for j in range(test.shape[1]-1):
+            # 忽略列为11的维度
+            if j==11:
+                continue
+            var_test = i[j]
+            # 该属性维度合力为F=0
+            F_a = 0
+            # 计算训练集中类A的合力
+            for a in train_a:
+                var_train = a[j]
+                f = (G-abs(var_train-var_test)*G)/(1+abs(var_train-var_test)**K)
+                F_a+=f
+            # 计算训练集中类B的合力
+            F_b = 0
+            for b in train_b:
+                var_train = b[j]
+                f = (G-abs(var_train-var_test)*G)/(1+abs(var_train-var_test)**K)
+                F_b+=f
+
+            # 合力比较，乘以权重
+            var_predict+=(F_a-F_b)*cors[j]
+
+        # 预测的类标号
+        predict_class = 0
+        # 计量结果
+        if var_predict == 0:
+            # 预测失败
+            print('failed!')
+            fail_count += 1
+        elif var_predict>0:
+            # 预测为a类，标号为0
+            predict_class = 0
+        elif var_predict<0:
+            predict_class = 1
+
+        if(predict_class == class_test):
+            count += 1
+
+    size = test.shape[0]
+    print('测试总数：',size,'失败率：',fail_count/size,'准确率:',count/size)
+
+
+
 if __name__ == '__main__':
     filename = 'adult.test'
     pp.discard(filename)
     data = handle_normal(filename)
     data = handle_continuous(data, filename)
-    do_classify('adult.data',filename)
+    #do_classify('adult.data',filename)
+    my_classify1('adult.data',filename)

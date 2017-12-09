@@ -66,7 +66,7 @@ dic_class = {'<=50K':0,'>50K':1}
 attr_names = ('age','workclass','fnlwgt','education','education-num','marital-status','occupation',
               'relationship','race','sex','capital-gain','capital-loss','hours-per-week','native-country','class')
 
-def remove_unknow_records(fname:str):
+def discard_records(fname:str):
     """
     本函数仅完成数据文件分离工作，*.wiped用于下一步挖掘工作,*.dirty用于缺失记录的进一步统计
     文件操作：剔除含有未知属性的记录
@@ -74,7 +74,7 @@ def remove_unknow_records(fname:str):
     """
     # 需要操作的三个文件：原文件，清洗后的文件，脏数据（属性缺失）文件
     file = open(fname, 'r')
-    f_wiped = open(fname+'.wiped','w')
+    f_wiped = open(fname+'.done','w')
     f_dirty = open(fname+'.dirty','w')
 
     # 缺失记录数量统计
@@ -98,7 +98,7 @@ def remove_unknow_records(fname:str):
     f_dirty.close()
 
 
-def load_data(fname:str):
+def handle_normal(fname:str):
     """
     读取数据文件,完成字符串数据到int数据的映射,对原来的continuous数据不做处理
     :param name: 数据文件名
@@ -119,6 +119,23 @@ def load_data(fname:str):
                        converters={1:cvt1,3:cvt3,5:cvt5,6:cvt6,7:cvt7,8:cvt8,9:cvt9,13:cvt13,14:cvt14})
     return data
 
+def handle_continuous(data:np.ndarray):
+    """
+    对数据的连续数据做离散处理
+    返回处理过后的ndarray多维数组
+    """
+    for i in range(data.shape[0]):
+        # 1. age-0、hours_pw-12，采用5的区间映射到0到20的取值范围
+        data[i,0] = data[i,0]/5
+        data[i, 12] = data[i, 12] / 5
+
+        # 2.fnlwgt-2,先取log运算，log后的取值范围[9,15]，再按0.5长度做等区间长度划分
+        data[i,2] = (np.log(data[i,2])-9)/0.5
+
+        # 3. cpl_gain-10、cpl_loss-11,简单做标记，对不为0的元素取1做标志
+        data[i,10] = 1 if data[i,10]>0 else 0
+        data[i, 11] = 1 if data[i, 11] > 0 else 0
+    return data
 
 def saveTxt(fname,data:np.ndarray):
     """
@@ -139,6 +156,7 @@ def load_np_file(fname):
     return np.loadtxt(fname,int,delimiter=',')
 
 
+#-----------------------------------------------------
 def statistics_continuous(data:np.ndarray):
     """
     对数据集的连续属性做统计：最大值，最小值，平均值，无偏样本标准差，相关性，
@@ -200,27 +218,6 @@ def plot_discrete(data:np.ndarray):
     plt.show()
 
 
-def mapping(data:np.ndarray):
-    """
-    对数据的连续数据做离散处理
-    返回处理过后的ndarray多维数组
-    """
-    # TODO 没找到整列向量原地除法操作,只能采用并不推荐的循环操作
-
-    for i in range(data.shape[0]):
-        # 1. age-0、hours_pw-12，采用5的区间映射到0到20的取值范围
-        data[i,0] = data[i,0]/5
-        data[i, 12] = data[i, 12] / 5
-
-        # 2.fnlwgt-2,先取log运算，log后的取值范围[9,15]，再按0.5长度做等区间长度划分
-        data[i,2] = (np.log(data[i,2])-9)/0.5
-
-        # 3. cpl_gain-10、cpl_loss-11,简单做标记，对不为0的元素取1做标志
-        data[i,10] = 1 if data[i,10]>0 else 0
-        data[i, 11] = 1 if data[i, 11] > 0 else 0
-    return data
-
-
 def plot_3d_scatter(data:np.ndarray):
     """
     根据3个与class相关度最高的属性，绘制三维散点图
@@ -259,7 +256,7 @@ def plot_3d_scatter(data:np.ndarray):
     axe.set_ylabel(attr_names[5])
     axe.set_zlabel(attr_names[4])
     plt.show()
-
+#-----------------------------------------------
 
 if __name__ == '__main__':
     """
@@ -273,24 +270,25 @@ if __name__ == '__main__':
     7.plot_3d_scatter(data:np.ndarray):，做3维散点图，简单得查看class的空间分布与属性的关系
     8.saveTxt(fname,data:np.ndarray)与load_np_file(fname)两个方法实现ndarray的保存与读取。
     """
+    filename = 'adult.data'
     # 1. 去除不全的数据，并保存文件
-    remove_unknow_records('adult.data')
+    discard_records(filename)
     # 2. 读取去除之后的所有的完整数据集，同时对字符串数据做映射
-    data = load_data('adult.data.wiped')
+    data = handle_normal(filename+'.done')
     # 3. 保存str映射之后的数据到.continuous(表示该数据文件中连续属性未处理)
-    saveTxt('adult.continuous',data)
+    #saveTxt('adult.continuous',data)
     # 4. 加载数据
-    data = load_np_file('adult.continuous')
+    #data = load_np_file('adult.continuous')
     # 5. 字符串属性（离散）作图与统计分析（各属性取各值的类占比情况）
-    plot_discrete(data)
-    plot_3d_scatter(data) # 这里3D散点的是原始连续数据的属性
+    #plot_discrete(data)
+    #plot_3d_scatter(data) # 这里3D散点的是原始连续数据的属性
     # 6. 对原始的连续属性做统计
-    statistics_continuous(data)
+    #statistics_continuous(data)
     # 7. 对连续属性做离散映射
-    mapping(data)
+    handle_continuous(data)
     # 8. 对连续属性离散映射之后再做统计
-    statistics_continuous(data)
+    #statistics_continuous(data)
     # 9. 3D散点图
-    plot_3d_scatter(data) # 这里3D散点的是离散化后的属性
+    #plot_3d_scatter(data) # 这里3D散点的是离散化后的属性
     # 10. 保存数据
-    saveTxt('adult.done', data)
+    saveTxt(filename+'.done', data)
